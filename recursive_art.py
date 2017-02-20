@@ -125,9 +125,9 @@ def generate_art(filename, x_size=350, y_size=350):
         x_size, y_size: optional args to set image dimensions (default: 350)
     """
     # Functions for red, green, and blue channels - where the magic happens!
-    red_function = ["x"]
-    green_function = ["y"]
-    blue_function = ["x"]
+    red_function = build_random_function(7, 9)
+    green_function = build_random_function(7, 9)
+    blue_function = build_random_function(7, 9)
 
     # Create image and loop over all pixels
     im = Image.new("RGB", (x_size, y_size))
@@ -143,6 +143,7 @@ def generate_art(filename, x_size=350, y_size=350):
                     )
 
     im.save(filename)
+
 
 def get_an_uncontroversial_filename():
     """ Find a filename that won't overwrite existing art.
@@ -176,6 +177,7 @@ def get_an_uncontroversial_filename():
     an_uncontroversial_filename = base_string + str(bigger_int) + extension
     return(an_uncontroversial_filename)
 
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
@@ -183,7 +185,7 @@ if __name__ == '__main__':
     # Create some computational art!
     # TODO: Un-comment the generate_art function call after you
     #       implement remap_interval and evaluate_random_function
-    # generate_art("myart.png")
+    generate_art(get_an_uncontroversial_filename())
 
     # Test that PIL is installed correctly
     # TODO: Comment or remove this function call after testing PIL install
