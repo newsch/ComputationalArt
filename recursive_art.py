@@ -33,8 +33,14 @@ def evaluate_random_function(f, x, y):
         >>> evaluate_random_function(["y"],0.1,0.02)
         0.02
     """
-    # TODO: implement this
-    pass
+    values = {
+        'x': x,
+        'y': y,
+    }
+    try:
+        return values[f[0]]
+    except KeyError:
+        print('function %s not found' % f[0])
 
 
 def remap_interval(val,
