@@ -123,33 +123,38 @@ def test_image(filename, x_size=350, y_size=350):
     im.save(filename)
 
 
-def generate_art(filename, x_size=350, y_size=350):
+def generate_art(filename,
+                 x_size=350,
+                 y_size=350,
+                 function_ranges=[[7, 9], [7, 9], [7, 9]],
+                 function_order=[0, 1, 2]):
     """ Generate computational art and save as an image file.
 
         filename: string filename for image (should be .png)
         x_size, y_size: optional args to set image dimensions (default: 350)
+        function_ranges: list of lists of min and max depth for functions
+        function_order: list of the order of functions to be used for RGB
     """
-    # Functions for red, green, and blue channels - where the magic happens!
-    print('red function:')
-    red_function = build_random_function(7, 9)
-    print('\ngreen function:')
-    green_function = build_random_function(7, 9)
-    print('\nblue function:')
-    blue_function = build_random_function(7, 9)
-    print()
-
+    # generate functions
+    num_functions = len(set(function_order))
+    unique_functions = []
+    for i in range(num_functions):
+        print('generating function %s:' % str(i+1))
+        unique_functions.append(build_random_function(*function_ranges[i]))
+        print()
+    # match functions to rgb
+    functions = []
+    for i in range(3):
+        functions.append(unique_functions[function_order[i]])
     # Create image and loop over all pixels
     im = Image.new("RGB", (x_size, y_size))
     pixels = im.load()
     for i in range(x_size):
         for j in range(y_size):
-            x = remap_interval(i, 0, x_size, -1, 1)
+            x = color_map(remap_interval(i, 0, x_size, -1, 1))
             y = remap_interval(j, 0, y_size, -1, 1)
-            pixels[i, j] = [
-                    color_map(red_function(x, y)),
-                    color_map(green_function(x, y)),
-                    color_map(blue_function(x, y))
-                    ]
+            pixels[i, j] = tuple(color_map(val_function(x, y))
+                                 for val_function in functions)
 
     im.save(filename)
 
