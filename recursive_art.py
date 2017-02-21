@@ -1,8 +1,13 @@
-""" TODO: Put your header comment here """
+"""
+Computational Art Project
+SoftDes Spring 2017
+Evan Lloyd New-Schmidt
+"""
 
 import random
 from PIL import Image
-from math import *
+from math import cos, sin, pi
+
 
 def build_random_function(min_depth, max_depth):
     """ Builds a random function of depth at least min_depth and depth
@@ -27,10 +32,10 @@ def build_random_function(min_depth, max_depth):
         [lambda a: cos(pi * a),      1,  'cos'],
         [lambda a: sin(pi * a),      1,  'sin'],
     ]
-    if max_depth <= 1 or (min_depth <=1 and random.choice([True, False])):
+    if max_depth <= 1 or (min_depth <= 1 and random.choice([True, False])):
         choice = random.choice(final_functions)
         print(choice[1], end=') ', flush=True)
-        return lambda a,b: choice[0](a, b)
+        return lambda a, b: choice[0](a, b)
     else:
         choice = random.choice(possible_functions)
         print(choice[2], end='(', flush=True)
