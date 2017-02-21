@@ -155,7 +155,7 @@ def get_an_uncontroversial_filename(base_string='myart',
         returns: filename as a string
     """
     import glob
-    files = glob.glob(destination + 'myart*.png')  # get all files of pattern
+    files = glob.glob(destination + base_string + '*' + extension)
     # parse number out of filename and get biggest one
     big_int = 1
     for filename in files:
