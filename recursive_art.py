@@ -2,7 +2,7 @@
 
 import random
 from PIL import Image
-
+from math import *
 
 def build_random_function(min_depth, max_depth):
     """ Builds a random function of depth at least min_depth and depth
@@ -15,32 +15,31 @@ def build_random_function(min_depth, max_depth):
                  (see assignment writeup for details on the representation of
                  these functions)
     """
-    # TODO: implement this
-    pass
-
-
-def evaluate_random_function(f, x, y):
-    """ Evaluate the random function f with inputs x,y
-        Representation of the function f is defined in the assignment writeup
-
-        f: the function to evaluate
-        x: the value of x to be used to evaluate the function
-        y: the value of y to be used to evaluate the function
-        returns: the function value
-
-        >>> evaluate_random_function(["x"],-0.5, 0.75)
-        -0.5
-        >>> evaluate_random_function(["y"],0.1,0.02)
-        0.02
-    """
-    values = {
-        'x': x,
-        'y': y,
-    }
-    try:
-        return values[f[0]]
-    except KeyError:
-        print('function %s not found' % f[0])
+    # list of final values
+    final_functions = [
+        [lambda a, b: a, 'x'],
+        [lambda a, b: b, 'y'],
+    ]
+    # list of functions with number of required arguments and names
+    possible_functions = [
+        [lambda a, b: a * b,         2,  'prod'],
+        [lambda a, b: 0.5 * (a + b), 2,  'avg'],
+        [lambda a: cos(pi * a),      1,  'cos'],
+        [lambda a: sin(pi * a),      1,  'sin'],
+    ]
+    if max_depth <= 1 or (min_depth <=1 and random.choice([True, False])):
+        choice = random.choice(final_functions)
+        print(choice[1], end=') ', flush=True)
+        return lambda a,b: choice[0](a, b)
+    else:
+        choice = random.choice(possible_functions)
+        print(choice[2], end='(', flush=True)
+        next_function = choice[0]
+        # generate arguments for next function
+        f_args = []
+        for i in range(choice[1]):  # TODO: change to single line
+            f_args.append(build_random_function(min_depth - 1, max_depth - 1))
+        return lambda a, b: next_function(*[f_arg(a, b) for f_arg in f_args])
 
 
 def remap_interval(val,
@@ -125,9 +124,13 @@ def generate_art(filename, x_size=350, y_size=350):
         x_size, y_size: optional args to set image dimensions (default: 350)
     """
     # Functions for red, green, and blue channels - where the magic happens!
+    print('red function:')
     red_function = build_random_function(7, 9)
+    print('\ngreen function:')
     green_function = build_random_function(7, 9)
+    print('\nblue function:')
     blue_function = build_random_function(7, 9)
+    print()
 
     # Create image and loop over all pixels
     im = Image.new("RGB", (x_size, y_size))
@@ -137,9 +140,9 @@ def generate_art(filename, x_size=350, y_size=350):
             x = remap_interval(i, 0, x_size, -1, 1)
             y = remap_interval(j, 0, y_size, -1, 1)
             pixels[i, j] = (
-                    color_map(evaluate_random_function(red_function, x, y)),
-                    color_map(evaluate_random_function(green_function, x, y)),
-                    color_map(evaluate_random_function(blue_function, x, y))
+                    color_map(red_function(x, y)),
+                    color_map(green_function(x, y)),
+                    color_map(blue_function(x, y))
                     )
 
     im.save(filename)
