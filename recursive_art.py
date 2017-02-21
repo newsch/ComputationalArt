@@ -196,7 +196,7 @@ if __name__ == '__main__':
     # Create some computational art!
     # TODO: Un-comment the generate_art function call after you
     #       implement remap_interval and evaluate_random_function
-    generate_art(get_an_uncontroversial_filename(), 1920, 1080)
+    generate_art(get_an_uncontroversial_filename())
 
     # Test that PIL is installed correctly
     # TODO: Comment or remove this function call after testing PIL install
