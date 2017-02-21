@@ -154,8 +154,8 @@ def generate_art(filename, x_size=350, y_size=350):
     im.save(filename)
 
 
-def get_an_uncontroversial_filename(destination='output/',
-                                    base_string='myart',
+def get_an_uncontroversial_filename(base_string='myart',
+                                    destination='output/',
                                     extension='.png'):
     """ Find a filename that won't overwrite existing art.
 
@@ -196,7 +196,7 @@ if __name__ == '__main__':
     # Create some computational art!
     # TODO: Un-comment the generate_art function call after you
     #       implement remap_interval and evaluate_random_function
-    generate_art(get_an_uncontroversial_filename())
+    generate_art(get_an_uncontroversial_filename(), 1920, 1080)
 
     # Test that PIL is installed correctly
     # TODO: Comment or remove this function call after testing PIL install
