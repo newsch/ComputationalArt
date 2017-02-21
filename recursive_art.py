@@ -145,11 +145,11 @@ def generate_art(filename, x_size=350, y_size=350):
         for j in range(y_size):
             x = remap_interval(i, 0, x_size, -1, 1)
             y = remap_interval(j, 0, y_size, -1, 1)
-            pixels[i, j] = (
+            pixels[i, j] = [
                     color_map(red_function(x, y)),
                     color_map(green_function(x, y)),
                     color_map(blue_function(x, y))
-                    )
+                    ]
 
     im.save(filename)
 
