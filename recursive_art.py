@@ -131,7 +131,7 @@ def generate_art(filename,
     pixels = im.load()
     for i in range(x_size):
         for j in range(y_size):
-            x = color_map(remap_interval(i, 0, x_size, -1, 1))
+            x = remap_interval(i, 0, x_size, -1, 1)
             y = remap_interval(j, 0, y_size, -1, 1)
             pixels[i, j] = tuple(color_map(val_function(x, y))
                                  for val_function in functions)
