@@ -174,9 +174,9 @@ def get_an_uncontroversial_filename(destination='output/',
     # parse number out of filename and get biggest one
     big_int = 1
     for filename in files:
-        int_begin = filename.rfind(base_string + len(base_string))
+        int_begin = filename.rfind(base_string) + len(base_string)
         int_end = filename.find(extension)
-        new_int = files[int_begin:int_end]
+        new_int = filename[int_begin:int_end]
         # check to make sure this is really an int and if it's bigger or not
         if new_int.isdigit():
             new_int = int(new_int)
