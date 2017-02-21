@@ -42,9 +42,8 @@ def build_random_function(min_depth, max_depth):
         print(choice[2], end='(', flush=True)
         next_function = choice[0]
         # generate arguments for next function
-        f_args = []
-        for i in range(choice[1]):  # TODO: change to single line
-            f_args.append(build_random_function(min_depth - 1, max_depth - 1))
+        f_args = [build_random_function(min_depth - 1, max_depth - 1)
+                  for i in range(choice[1])]
         return lambda a, b: next_function(*[f_arg(a, b) for f_arg in f_args])
 
 
