@@ -122,9 +122,7 @@ def generate_art(filename,
         unique_functions.append(build_random_function(*function_ranges[i]))
         print()
     # match functions to rgb
-    functions = []
-    for i in range(3):
-        functions.append(unique_functions[function_order[i]])
+    functions = [unique_functions[function_order[i]] for i in range(3)]
     # Create image and loop over all pixels
     im = Image.new("RGB", (x_size, y_size))
     pixels = im.load()
