@@ -103,26 +103,6 @@ def color_map(val):
     return int(color_code)
 
 
-def test_image(filename, x_size=350, y_size=350):
-    """ Generate test image with random pixels and save as an image file.
-
-        filename: string filename for image (should be .png)
-        x_size, y_size: optional args to set image dimensions (default: 350)
-    """
-    # Create image and loop over all pixels
-    im = Image.new("RGB", (x_size, y_size))
-    pixels = im.load()
-    for i in range(x_size):
-        for j in range(y_size):
-            x = remap_interval(i, 0, x_size, -1, 1)
-            y = remap_interval(j, 0, y_size, -1, 1)
-            pixels[i, j] = (random.randint(0, 255),  # Red channel
-                            random.randint(0, 255),  # Green channel
-                            random.randint(0, 255))  # Blue channel
-
-    im.save(filename)
-
-
 def generate_art(filename,
                  x_size=350,
                  y_size=350,
