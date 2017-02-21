@@ -8,6 +8,8 @@ Evan Lloyd New-Schmidt
 import random
 from PIL import Image
 from math import cos, sin, pi
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 
 def build_random_function(min_depth, max_depth):
@@ -35,11 +37,11 @@ def build_random_function(min_depth, max_depth):
     ]
     if max_depth <= 1 or (min_depth <= 1 and random.choice([True, False])):
         choice = random.choice(final_functions)
-        print(choice[1], end=') ', flush=True)
+        logging.debug('Chose ' + choice[1])
         return lambda a, b: choice[0](a, b)
     else:
         choice = random.choice(possible_functions)
-        print(choice[2], end='(', flush=True)
+        logging.debug('Chose ' + choice[2])
         next_function = choice[0]
         # generate arguments for next function
         f_args = [build_random_function(min_depth - 1, max_depth - 1)
@@ -114,18 +116,19 @@ def generate_art(filename,
         function_ranges: list of lists of min and max depth for functions
         function_order: list of the order of functions to be used for RGB
     """
-    # generate functions
+    logging.debug('Generating functions')
     num_functions = len(set(function_order))
     unique_functions = []
     for i in range(num_functions):
-        print('generating function %s:' % str(i+1))
+        logging.info('Generating function ' + str(i+1))
         unique_functions.append(build_random_function(*function_ranges[i]))
-        print()
+    logging.debug('Finished genereating functions')
     # match functions to rgb
     functions = [unique_functions[function_order[i]] for i in range(3)]
     # Create image and loop over all pixels
     im = Image.new("RGB", (x_size, y_size))
     pixels = im.load()
+    logging.debug('Writing values to pixels')
     for i in range(x_size):
         for j in range(y_size):
             x = remap_interval(i, 0, x_size, -1, 1)
@@ -133,6 +136,8 @@ def generate_art(filename,
             pixels[i, j] = tuple(color_map(val_function(x, y))
                                  for val_function in functions)
 
+    logging.debug('Finished writing values to pixels')
+    logging.info('Saving image to ' + filename)
     im.save(filename)
 
 
