@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Computational Art Project
 SoftDes Spring 2017
