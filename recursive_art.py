@@ -153,12 +153,15 @@ def generate_art(filename, x_size=350, y_size=350):
     im.save(filename)
 
 
-def get_an_uncontroversial_filename():
+def get_an_uncontroversial_filename(destination='output/',
+                                    base_string='myart',
+                                    extension='.png'):
     """ Find a filename that won't overwrite existing art.
 
         Do this in a roudabout way of finding all the current art files that
-        follow a convention of base_string + an_int + extension, finding the
-        largest an_int, and +1-ing that to get the returned filename.
+        follow a convention of base_string + an_int + extension in the
+        destination folder, finding the largest an_int, and +1-ing that to get
+        the returned filename.
 
         The irony of this is that in the process of writing
         and testing this function many arts were created and overwritten.
@@ -166,15 +169,13 @@ def get_an_uncontroversial_filename():
         returns: filename as a string
     """
     import glob
-    base_string = 'myart'  # prefix for filenames
-    extension = '.png'
-    files = glob.glob('myart*.png')  # get all files that match the pattern
+    files = glob.glob(destination + 'myart*.png')  # get all files of pattern
     # parse number out of filename and get biggest one
     big_int = 1
-    for file in files:
-        int_begin = len(base_string)
-        int_end = file.find(extension)
-        new_int = file[int_begin:int_end]
+    for filename in files:
+        int_begin = filename.rfind(base_string + len(base_string))
+        int_end = filename.find(extension)
+        new_int = files[int_begin:int_end]
         # check to make sure this is really an int and if it's bigger or not
         if new_int.isdigit():
             new_int = int(new_int)
@@ -182,7 +183,8 @@ def get_an_uncontroversial_filename():
                 big_int = new_int
 
     bigger_int = big_int + 1  # make a bigger int for the new filename
-    an_uncontroversial_filename = base_string + str(bigger_int) + extension
+    an_uncontroversial_filename = destination + base_string \
+        + str(bigger_int) + extension
     return(an_uncontroversial_filename)
 
 
